@@ -9,7 +9,7 @@ import {useCountdown} from "@hooks/countdown-timer";
 const SETTINGS = {
     game: Game.FLASH_MULTIPLY,
     gameType: FlashMultiplyGameType.TYPING,
-    isTimed: true
+    isTimed: false
 }
 
 
