@@ -1,9 +1,7 @@
-import {FlashMultiplyGameType} from "@enums";
-
+import {FlashMultiplyGameType} from "@/enum";
 
 export type GameStats = {
-    highest_streak: number;
-    highest_streak_timed: number;
+    highest_streak: number
 }
 
 export type FlashMultiplyGameStats = Record<FlashMultiplyGameType, GameStats>;

@@ -1,7 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {FlashMultiplyGameStats} from "@types";
-import {Game} from "@enums";
-
+import {FlashMultiplyGameStats, Game} from "@types";
 
 
 export const getGameStats = async (game: Game) => {

@@ -5,4 +5,5 @@ export enum Game {
 export enum FlashMultiplyGameType {
     TYPING= "typing",
     MULTIPLE_CHOICE= "multipleChoice",
+    TIMED= "timed"
 }
