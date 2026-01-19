@@ -24,6 +24,12 @@
       ],
       "@database": [
         "database.ts"
+      ],
+      "@config": [
+        "config.ts"
+      ],
+      "@theme": [
+        "theme.ts"
       ]
     }
   },
