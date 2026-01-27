@@ -1,4 +1,4 @@
-import {FlashMultiplyProblemType} from "@enums";
+import {ClockMode, Game, ProblemType} from "@enums";
 
 export type SelectOption = {
     key: string;
@@ -11,17 +11,49 @@ export type RadioGroupOption = {
     value: any;
 };
 
-
 export type GameStats = {
-    highest_streak: number;
-    highest_streak_timed: number;
+    highestStreak: number;            // no clock
+    highestStreakCountdown: number;   // countdown
+    highestStreakStopwatch: number;   // stopwatch
+    highestStopwatchTimeSeconds: number;
+};
+
+export type TableNumber = `${number}`;
+
+export type Stats<P extends string = ProblemType> = Record<
+    Game,
+    Record<TableNumber, Record<P, GameStats>>
+>;
+
+export type GameConfig = {
+    clockMode: ClockMode;
+    problemType: ProblemType;
 }
 
-export type FlashMultiplyConfig = {
+export type FlashMultiplyRouteConfig = GameConfig & {
+    timetables: string;
+    maxMultiplier: string;
+}
+
+export type FlashMultiplyConfig = GameConfig & {
     timetables: number[];
     maxMultiplier: number;
-    problemType: FlashMultiplyProblemType;
-    isTimed: boolean;
 }
 
-export type FlashMultiplyGameStats = Record<FlashMultiplyProblemType, GameStats>;
+export type WakoTableGameConfig = GameConfig & {
+    tableNumber: number;
+}
+
+export type WakoTableGameRouteConfig = GameConfig & {
+    tableNumber: string;
+}
+
+export type StreakMode = "timed" | "untimed";
+
+export type FlashMultiplyGameStats = Record<ProblemType, GameStats>;
+export type FlashMultiplyQuestion = {
+    answer: number
+    options: number[]
+    timetableQuestion: number[]
+}
+

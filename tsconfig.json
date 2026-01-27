@@ -13,6 +13,9 @@
       "@hooks/*": [
         "hooks/*"
       ],
+      "@utils/*": [
+        "utils/*"
+      ],
       "@enums": [
         "enums.ts"
       ],

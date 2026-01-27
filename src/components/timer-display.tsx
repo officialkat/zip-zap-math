@@ -10,14 +10,14 @@ const styles = StyleSheet.create({
     }
 });
 interface TimerDisplayProps {
-    minutes: string;
-    seconds: string;
+    minutes: number;
+    seconds: number;
 }
 
 const TimerDisplay = ({minutes, seconds}: TimerDisplayProps) => {
     return (
         <View style={styles.wrapper}>
-            <Text>{minutes} : {seconds}</Text>
+            <Text>{minutes}m : {seconds}s</Text>
         </View>
     );
 };

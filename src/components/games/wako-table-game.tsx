@@ -1,24 +1,25 @@
-import React, {useCallback, useRef} from "react";
+import React, {useState, useCallback, useRef} from 'react';
 import { StyleSheet, View } from "react-native";
+import Text from "@components/ui/Text";
+import GameOverDisplay from "@components/game-over-display";
+import Button from "@components/ui/Button";
 import { ClockMode, Game, ProblemType } from "@enums";
 import PointsDisplay from "@components/points-display";
 import TimerDisplay from "@components/timer-display";
-import ProblemDisplay from "@components/problem-display";
-import GameOverDisplay from "@components/game-over-display";
-import Button from "@components/ui/Button";
 import { useGameLogic } from "@hooks/use-game-logic";
-import GameMultipleChoice from "@components/game-multiple-choice";
 import GameTypedInput from "@components/game-typed-input";
-import {makeFlashMultiplyQuestion} from "@utils/flash-multiply-utils";
-import {FlashMultiplyQuestion} from "@types";
+import GameMultipleChoice from "@components/game-multiple-choice";
+import {makeTimesTableOptions} from "@utils/wako-table-game-utils";
 
 const styles = StyleSheet.create({
     wrapper: {
-        // backgroundColor:'pink',
         flex: 1,
 
     },
     header: {
+        marginBottom: 30
+    },
+    tableProgression:{
         marginBottom: 30
     },
     problemContainer: {
@@ -27,27 +28,19 @@ const styles = StyleSheet.create({
     }
 });
 
-interface FlashMultiplyGameProps {
+interface WakoTablesGameProps {
     problemType: ProblemType;
+    tableNumber: number;
     clockMode: ClockMode;
-    timetables: number[];
-    maxMultiplier: number;
 }
 
+const WakoTableGame = ({ tableNumber, problemType, clockMode }: WakoTablesGameProps) => {
+    const [tableProgression, setTableProgression] = useState<number[]>([]);
 
-
-const FlashMultiplyGame = ({
-                               problemType,
-                               clockMode,
-                               timetables,
-                               maxMultiplier
-                           }: FlashMultiplyGameProps) => {
-    // Generate question callback
-    const generateQuestion = useCallback((): FlashMultiplyQuestion => {
-        return makeFlashMultiplyQuestion(timetables, maxMultiplier);
-    }, [timetables, maxMultiplier]);
-
-    const tableNumber = timetables.join(',');
+    const generateQuestion = useCallback((index: number) => {
+        return makeTimesTableOptions(tableNumber, index, 4);
+    }, [tableNumber]);
+    const instructionText = ProblemType.MULTIPLE_CHOICE ? 'Tap the first multiple.' : 'Type the first multiple.'
 
     const {
         points,
@@ -60,40 +53,43 @@ const FlashMultiplyGame = ({
         handleMultipleChoiceAnswer,
         typedAnswer,
         handleTypedAnswerChange,
-        resetGame,
-        isNewHighScore
-    } = useGameLogic<FlashMultiplyQuestion>({
-        game: Game.FLASH_MULTIPLY,
+        resetGame: baseResetGame,
+        isNewHighScore,
+    } = useGameLogic({
+        game: Game.WAKO_TABLE,
         problemType,
         clockMode,
+        tableNumber,
         generateQuestion,
-        tableNumber
+        onCorrectAnswer: (answer) => {
+            setTableProgression(prev => [...prev, answer]);
+        },
+        onReset: () => {
+            setTableProgression([]);
+        },
     });
 
 
     if (gameOver) {
         return (
             <GameOverDisplay isNewHighScore={isNewHighScore} points={points} highestStreak={highestStreak}>
-                <Button label="Play Again" onPress={resetGame} />
+                <Button label="Play Again" onPress={baseResetGame} />
             </GameOverDisplay>
         );
     }
 
     if (!question) return null;
 
-
-
     return (
         <View style={styles.wrapper}>
-            <View style={styles.header}>
-                <PointsDisplay points={points} highScore={highestStreak} />
-                {isTimed && <TimerDisplay minutes={minutes} seconds={seconds} />}
-            </View>
-
+           <View style={styles.header}>
+               <PointsDisplay points={points} />
+               {isTimed && <TimerDisplay minutes={minutes} seconds={seconds} />}
+           </View>
             <View style={styles.problemContainer}>
-                <ProblemDisplay
-                    problem={`${question.timetableQuestion[0]} × ${question.timetableQuestion[1]}`}
-                />
+                <Text style={styles.tableProgression}>
+                    {tableProgression.length ? tableProgression.join(' ') : instructionText}
+                </Text>
 
                 {problemType === ProblemType.TYPED && (
                     <GameTypedInput
@@ -109,8 +105,9 @@ const FlashMultiplyGame = ({
                     />
                 )}
             </View>
+
         </View>
     );
 };
 
-export default FlashMultiplyGame;
+export default WakoTableGame;
