@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList, StyleProp, StyleSheet, TextStyle, ViewStyle} from "react-native";
+import {FlatList, FlatListProps, StyleProp, StyleSheet, TextStyle, ViewStyle} from "react-native";
 
 import SquareButton from "@components/ui/square-button";
 import {SelectOption} from "@types";
@@ -10,12 +10,15 @@ const styles = StyleSheet.create({
         gap: 10,
     }
 });
+
+type SelectListProps = Omit<FlatListProps<SelectOption>, 'data' | 'renderItem'>
+
 interface SelectProps {
     options: SelectOption[];
     onChange: (selectedOptions: SelectOption[]) => void;
     defaultOptions?: SelectOption[];
     multiselect?: boolean;
-    numOfColumns?: number;
+    listProps?: SelectListProps;
     style?: {
         button?: StyleProp<ViewStyle>;
         text?: StyleProp<TextStyle>;
@@ -23,8 +26,14 @@ interface SelectProps {
     };
 }
 
-const Select = ({options, multiselect, defaultOptions = [],  numOfColumns = 4, style, onChange}: SelectProps) => {
+const Select = ({options, multiselect, defaultOptions = [], listProps, style, onChange}: SelectProps) => {
     const [selected, setSelected] = useState<SelectOption[]>(defaultOptions);
+
+    const defaultListProps: SelectListProps = {
+        scrollEnabled: false,
+        numColumns: 4,
+        ...listProps
+    }
 
     const isSelected = (option: SelectOption) =>
         selected.some(s => s.key === option.key);
@@ -60,10 +69,10 @@ const Select = ({options, multiselect, defaultOptions = [],  numOfColumns = 4, s
         <FlatList
             contentContainerStyle={[styles.gap,style?.contentContainerStyle]}
             columnWrapperStyle={styles.gap}
-            numColumns={numOfColumns}
             data={options}
             renderItem={renderItem}
             keyExtractor={(item) => String(item.key)}
+            {...defaultListProps}
         />
     );
 };

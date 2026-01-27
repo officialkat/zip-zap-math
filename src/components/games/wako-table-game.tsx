@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback} from 'react';
 import { StyleSheet, View } from "react-native";
 import Text from "@components/ui/Text";
 import GameOverDisplay from "@components/game-over-display";
@@ -55,6 +55,7 @@ const WakoTableGame = ({ tableNumber, problemType, clockMode }: WakoTablesGamePr
         handleTypedAnswerChange,
         resetGame: baseResetGame,
         isNewHighScore,
+        questionIndex
     } = useGameLogic({
         game: Game.WAKO_TABLE,
         problemType,
@@ -100,6 +101,7 @@ const WakoTableGame = ({ tableNumber, problemType, clockMode }: WakoTablesGamePr
 
                 {problemType === ProblemType.MULTIPLE_CHOICE && (
                     <GameMultipleChoice
+                        key={`question-${questionIndex}`}
                         options={question.options}
                         onSelect={handleMultipleChoiceAnswer}
                     />

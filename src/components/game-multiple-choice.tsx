@@ -44,7 +44,9 @@ const GameMultipleChoice = ({
                 contentContainerStyle: styles.contentContainer
             }}
             options={formattedOptions}
-            numOfColumns={numOfColumns}
+            listProps={{
+                numColumns: numOfColumns,
+            }}
             onChange={handleChange}
         />
     );

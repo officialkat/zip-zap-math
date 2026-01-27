@@ -1,5 +1,5 @@
 const primary = '#383838';
-const accent = '#f88b8b';
+const accent = '#F57777';
 const success = '#9af88b';
 const error = '#f88b8b';
 

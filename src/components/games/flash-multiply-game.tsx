@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from "react";
+import React, {useCallback} from "react";
 import { StyleSheet, View } from "react-native";
 import { ClockMode, Game, ProblemType } from "@enums";
 import PointsDisplay from "@components/points-display";
@@ -61,7 +61,8 @@ const FlashMultiplyGame = ({
         typedAnswer,
         handleTypedAnswerChange,
         resetGame,
-        isNewHighScore
+        isNewHighScore,
+        questionIndex
     } = useGameLogic<FlashMultiplyQuestion>({
         game: Game.FLASH_MULTIPLY,
         problemType,
@@ -104,6 +105,7 @@ const FlashMultiplyGame = ({
 
                 {problemType === ProblemType.MULTIPLE_CHOICE && (
                     <GameMultipleChoice
+                        key={`question-${questionIndex}`}
                         options={question.options}
                         onSelect={handleMultipleChoiceAnswer}
                     />

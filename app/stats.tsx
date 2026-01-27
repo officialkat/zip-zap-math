@@ -1,6 +1,6 @@
 import {StyleSheet, ScrollView, View, Alert} from "react-native";
 import ScreenWrapper from "@components/screen-wrapper";
-import {getAllGameStats, resetAllStats} from "@components/database";
+import {getAllGameStats, resetAllStats} from "@database";
 import { Stats } from "@types";
 import { useEffect, useState } from "react";
 import Accordion from "@components/ui/accordion";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { GameStats, TableNumber } from "@types";
 import { Game, ProblemType, ClockMode } from "@enums";
-import { DEFAULT_GAME_STATS, getOneGameStat, saveGameStat } from "@components/database";
+import { DEFAULT_GAME_STATS, getOneGameStat, saveGameStat } from "@database";
 
 const keyForClockMode = (clockMode: ClockMode): keyof GameStats => {
     if (clockMode === ClockMode.COUNTDOWN) return "highestStreakCountdown";
