@@ -1,3 +1,6 @@
+import {ClockMode} from "@enums";
+import {GameStats} from "@types";
+
 export const shuffle = <T,>(array: T[]): T[] => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -5,4 +8,10 @@ export const shuffle = <T,>(array: T[]): T[] => {
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
+};
+
+export const getHighestStreakKey = (clockMode: ClockMode): keyof GameStats => {
+    if (clockMode === ClockMode.COUNTDOWN) return "highestStreakCountdown";
+    if (clockMode === ClockMode.STOPWATCH) return "highestStreakStopwatch";
+    return "highestStreak";
 };

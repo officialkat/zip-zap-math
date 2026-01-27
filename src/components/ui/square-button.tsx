@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Pressable, PressableProps} from "react-native";
+import {StyleSheet, View, Pressable, PressableProps, PressableStateCallbackType} from "react-native";
 
 import {useThemeColor} from "@hooks/use-theme-color";
 import Text from "@components/ui/Text";
@@ -29,19 +29,35 @@ const useStyles = () => {
     });
 }
 
-interface SquareButtonProps extends PressableProps {
-    label: string;
+type BaseProps = PressableProps & {
     active?: boolean;
-}
+};
 
-const SquareButton = ({label, active, ...rest}: SquareButtonProps) => {
+type LabelOnly = {
+    label: string;
+    children?: never;
+};
+
+type ChildrenOnly = {
+    label?: never;
+    children: React.ReactElement;
+};
+
+export type SquareButtonProps = BaseProps & (LabelOnly | ChildrenOnly);
+
+const SquareButton = ({label, active, children, style, ...rest}: SquareButtonProps) => {
     const styles = useStyles();
     return (
-        <Pressable style={[styles.button]} {...rest}
+        <Pressable
+            style={(state: PressableStateCallbackType) => [
+                styles.button,
+                typeof style === "function" ? style(state) : style,
+            ]}
+            {...rest}
         >
             {({ pressed }) => (
                 <View style={[styles.innerWrapper, (pressed || active) && styles.active]}>
-                    <Text>{label}</Text>
+                    {children ? children : <Text>{label}</Text>}
                 </View>
             )}
         </Pressable>

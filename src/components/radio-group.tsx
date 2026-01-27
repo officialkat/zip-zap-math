@@ -20,8 +20,6 @@ interface RadioGroupProps {
     onChange: (selection: RadioGroupOption) => void;
 }
 
-
-
 const RadioGroup = ({defaultValue, options,onChange}: RadioGroupProps) => {
     const [selected, setSelected] = useState(defaultValue);
 

@@ -1,8 +1,20 @@
 export enum Game {
-    FLASH_MULTIPLY= "flash_multiply"
+    FLASH_MULTIPLY= "flashMultiply",
+    WAKO_TABLE= "wakoTable",
 }
 
-export enum FlashMultiplyProblemType {
-    TYPING= "typing",
+export enum ProblemType {
+    TYPED= "typed",
     MULTIPLE_CHOICE= "multipleChoice",
+}
+
+export enum ClockMode {
+    NONE = "none",
+    COUNTDOWN = "countdown",
+    STOPWATCH = "stopwatch",
+}
+
+export enum TimerMode {
+    COUNTDOWN = "countdown",
+    STOPWATCH = "stopwatch",
 }

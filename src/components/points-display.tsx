@@ -4,7 +4,7 @@ import Text from "@components/ui/Text";
 
 const styles = StyleSheet.create({
     wrapper: {
-        paddingVertical: 4,
+
     }
 });
 
