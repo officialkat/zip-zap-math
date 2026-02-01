@@ -1,8 +1,8 @@
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import ScreenWrapper from "@components/screen-wrapper";
 import Text from "@components/ui/Text";
 import Select from "@components/select";
-import {FlashMultiplyConfig, WakoTableGameConfig, RadioGroupOption, SelectOption} from "@types";
+import {FlashMultiplyConfig, RadioGroupOption, SelectOption} from "@types";
 import RadioGroup from "@components/radio-group";
 import Button from "@components/ui/Button";
 import Spacer from "@components/ui/spacer";
@@ -64,7 +64,7 @@ export default function FlashMultiplyGameRoot() {
             <View style={styles.body}>
                 <Text type="subtitle">Settings</Text>
                 <Text type="defaultSemiBold">Choose timetable:</Text>
-                <Select defaultOptions={DEFAULT_VALUES.timetables} options={TABLE_NUMBER_OPTIONS} onChange={handleTimetableSelection}/>
+                <Select multiselect defaultOptions={DEFAULT_VALUES.timetables} options={TABLE_NUMBER_OPTIONS} onChange={handleTimetableSelection}/>
                 <Text type="defaultSemiBold">Choose timer mode:</Text>
                 <RadioGroup defaultValue={DEFAULT_VALUES.clockMode} options={CLOCK_MODE_OPTIONS} onChange={handleClockModeSelection}/>
                 <Text type="defaultSemiBold">Choose question type:</Text>

@@ -84,7 +84,7 @@ const WakoTableGame = ({ tableNumber, problemType, clockMode }: WakoTablesGamePr
     return (
         <View style={styles.wrapper}>
            <View style={styles.header}>
-               <PointsDisplay points={points} />
+               <PointsDisplay points={points} highScore={highestStreak} />
                {isTimed && <TimerDisplay minutes={minutes} seconds={seconds} />}
            </View>
             <View style={styles.problemContainer}>

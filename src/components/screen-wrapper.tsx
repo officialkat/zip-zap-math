@@ -18,7 +18,7 @@ const useStyles =  () => {
         },
         backButton: {
             paddingVertical: 10,
-            paddingRight:10,
+            paddingRight:20,
             marginRight: "auto"
         }
     });
