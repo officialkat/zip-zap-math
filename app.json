@@ -2,7 +2,7 @@
   "expo": {
     "name": "zip-zap-math",
     "slug": "zip-zap-math",
-    "version": "1.0.2",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icons/ios-dark.png",
     "scheme": "zipzapmath",
@@ -49,6 +49,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d3a7314c-5864-4ce3-a566-4fc902ba3f3e"
+      }
+    },
+    "owner": "katleenb"
   }
 }
