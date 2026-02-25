@@ -14,6 +14,7 @@ interface UseGameLogicConfig<T extends Question> {
     problemType: ProblemType;
     clockMode: ClockMode;
     tableNumber: number | string;
+    formatProblem?: (question: T) => string;
     generateQuestion: (index: number) => T;
     onCorrectAnswer?: (answer: number) => void;
     onIncorrectAnswer?: () => void;
@@ -43,7 +44,6 @@ interface UseGameLogicReturn<T extends Question> {
 
     // Game controls
     resetGame: () => void;
-
     questionIndex: number;
 }
 
@@ -52,6 +52,7 @@ export const useGameLogic = <T extends Question>({
                                                      problemType,
                                                      clockMode,
                                                      tableNumber,
+                                                     formatProblem,
                                                      generateQuestion,
                                                      onCorrectAnswer,
                                                      onIncorrectAnswer,
@@ -120,7 +121,7 @@ export const useGameLogic = <T extends Question>({
         if (question) {
             setGameOverSummary({
                 reason,
-                problem: `${question.timetableQuestion[0]} × ${question.timetableQuestion[1]}`,
+                problem: formatProblem ? formatProblem(question) : undefined,
                 correctAnswer: question.answer,
                 userAnswer: userAnswer ?? null,
             });
@@ -133,7 +134,7 @@ export const useGameLogic = <T extends Question>({
         }
 
         onIncorrectAnswer?.();
-    }, [clockMode, points, highestStreak, resetTimer, saveHighestStreak, saveHighestStopwatchTime, timeSeconds, onIncorrectAnswer,question]);
+    }, [clockMode, points, highestStreak, resetTimer, saveHighestStreak, saveHighestStopwatchTime, timeSeconds, onIncorrectAnswer,question, formatProblem]);
 
 
     // Handle correct/incorrect answer

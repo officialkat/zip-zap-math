@@ -61,9 +61,10 @@ const FlashMultiplyGame = ({
         typedAnswer,
         handleTypedAnswerChange,
         resetGame,
-        questionIndex
+        questionIndex,
     } = useGameLogic<FlashMultiplyQuestion>({
         game: Game.FLASH_MULTIPLY,
+        formatProblem: (q) => `${q.timetableQuestion[0]} × ${q.timetableQuestion[1]}`,
         problemType,
         clockMode,
         generateQuestion,

@@ -112,7 +112,7 @@ const GameOverDisplay = ({ scoreStats, gameOverSummary, children}: GameOverDispl
                 <Spacer/>
                 {reason === 'wrong_answer' ? (
                     <>
-                        <Text>Question: {problem}</Text>
+                        {problem && <Text>Question: {problem}</Text>}
                         <Text>Correct Answer: {correctAnswer}</Text>
                         <Text>Your Answer: {userAnswer}</Text>
                     </>

@@ -66,7 +66,7 @@ export type GameOverReason = 'wrong_answer' | 'time_up';
 
 export type GameOverSummary = {
     reason: GameOverReason;
-    problem: string;
+    problem: string | undefined;
     correctAnswer: number;
     userAnswer: number | null;
 }
