@@ -13,7 +13,7 @@ export const PROBLEM_TYPE_OPTIONS: RadioGroupOption[] = [
 ];
 
 export const TABLE_NUMBER_OPTIONS: SelectOption[] = Array.from(
-    { length: 12 },
+    { length: 32 },
     (_, i) => {
         const n = i + 1;
         return { key: String(n), label: String(n), value: n };

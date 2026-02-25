@@ -50,9 +50,9 @@ const FlashMultiplyGame = ({
     const tableNumber = timetables.join(',');
 
     const {
-        points,
+        scoreStats,
+        gameOverSummary,
         gameOver,
-        highestStreak,
         question,
         minutes,
         seconds,
@@ -61,7 +61,6 @@ const FlashMultiplyGame = ({
         typedAnswer,
         handleTypedAnswerChange,
         resetGame,
-        isNewHighScore,
         questionIndex
     } = useGameLogic<FlashMultiplyQuestion>({
         game: Game.FLASH_MULTIPLY,
@@ -72,9 +71,9 @@ const FlashMultiplyGame = ({
     });
 
 
-    if (gameOver) {
+    if (gameOver && gameOverSummary) {
         return (
-            <GameOverDisplay isNewHighScore={isNewHighScore} points={points} highestStreak={highestStreak}>
+            <GameOverDisplay scoreStats={scoreStats} gameOverSummary={gameOverSummary}>
                 <Button label="Play Again" onPress={resetGame} />
             </GameOverDisplay>
         );
@@ -83,17 +82,17 @@ const FlashMultiplyGame = ({
     if (!question) return null;
 
 
-
+    const problem = `${question.timetableQuestion[0]} × ${question.timetableQuestion[1]}`
     return (
         <View style={styles.wrapper}>
             <View style={styles.header}>
-                <PointsDisplay points={points} highScore={highestStreak} />
+                <PointsDisplay points={scoreStats.points} highScore={scoreStats.highestStreak} />
                 {isTimed && <TimerDisplay minutes={minutes} seconds={seconds} />}
             </View>
 
             <View style={styles.problemContainer}>
                 <ProblemDisplay
-                    problem={`${question.timetableQuestion[0]} × ${question.timetableQuestion[1]}`}
+                    problem={problem}
                 />
 
                 {problemType === ProblemType.TYPED && (

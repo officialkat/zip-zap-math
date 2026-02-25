@@ -57,3 +57,16 @@ export type FlashMultiplyQuestion = {
     timetableQuestion: number[]
 }
 
+export type ScoreStats = {
+    points: number;
+    highestStreak: number;
+    isNewHighScore: boolean;
+}
+export type GameOverReason = 'wrong_answer' | 'time_up';
+
+export type GameOverSummary = {
+    reason: GameOverReason;
+    problem: string;
+    correctAnswer: number;
+    userAnswer: number | null;
+}

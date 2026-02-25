@@ -5,6 +5,7 @@ import {View, StyleSheet} from "react-native";
 import Text from "@components/ui/Text";
 import Spacer from "@components/ui/spacer";
 import {useThemeColor} from "@hooks/use-theme-color";
+import {GameOverSummary, ScoreStats} from "@types";
 
 const getGameOverMessage = (isVictory: boolean, highestStreak: number, points: number): string => {
     if (isVictory) {
@@ -91,21 +92,33 @@ const useStyles = ()=>{
 }
 
 interface GameOverDisplayProps {
-    points: number;
-    highestStreak: number;
-    isNewHighScore: boolean
+    scoreStats: ScoreStats;
+    gameOverSummary: GameOverSummary;
     children?: React.ReactElement
 }
 
-const GameOverDisplay = ({ points, highestStreak,isNewHighScore, children}: GameOverDisplayProps) => {
+const GameOverDisplay = ({ scoreStats, gameOverSummary, children}: GameOverDisplayProps) => {
+    const {isNewHighScore,highestStreak,points} = scoreStats
+    const {reason, problem, correctAnswer, userAnswer} = gameOverSummary
     const styles = useStyles()
     const gameOverMessage = getGameOverMessage(isNewHighScore,highestStreak,points)
+
     return (
         <View>
             <View style={styles.header}>
                 <Text type="subtitle">Game Over!</Text>
                 <Text>Highest Streak: {highestStreak}</Text>
                 <Text>Points: {points}</Text>
+                <Spacer/>
+                {reason === 'wrong_answer' ? (
+                    <>
+                        <Text>Question: {problem}</Text>
+                        <Text>Correct Answer: {correctAnswer}</Text>
+                        <Text>Your Answer: {userAnswer}</Text>
+                    </>
+                ) : (
+                    <Text>Time&#39;s Up!</Text>
+                )}
                 <Spacer/>
                 {<Text style={isNewHighScore ? styles.victory : styles.defeat}>{gameOverMessage}</Text>}
             </View>

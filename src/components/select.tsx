@@ -22,6 +22,7 @@ interface SelectProps {
     style?: {
         button?: StyleProp<ViewStyle>;
         text?: StyleProp<TextStyle>;
+        listStyle?: StyleProp<ViewStyle>;
         contentContainerStyle?: StyleProp<ViewStyle>;
     };
 }
@@ -67,6 +68,7 @@ const Select = ({options, multiselect, defaultOptions = [], listProps, style, on
 
     return (
         <FlatList
+            style={style?.listStyle}
             contentContainerStyle={[styles.gap,style?.contentContainerStyle]}
             columnWrapperStyle={styles.gap}
             data={options}

@@ -62,7 +62,13 @@ export default function WakoTableSettingsRoot() {
             <View style={styles.body}>
                 <Text type="subtitle">Settings</Text>
                 <Text type="defaultSemiBold">Choose timetable:</Text>
-                <Select defaultOptions={DEFAULT_VALUES.tableNumber} options={TABLE_NUMBER_OPTIONS} onChange={handleTimetableSelection}/>
+                <Select
+                    defaultOptions={DEFAULT_VALUES.tableNumber}
+                    options={TABLE_NUMBER_OPTIONS}
+                    onChange={handleTimetableSelection}
+                    style={{listStyle: {maxHeight: 230}}}
+                    listProps={{scrollEnabled: true}}
+                />
                 <Text type="defaultSemiBold">Choose timer mode:</Text>
                 <RadioGroup defaultValue={DEFAULT_VALUES.clockMode} options={CLOCK_MODE_OPTIONS} onChange={handleClockModeSelection}/>
                 <Text type="defaultSemiBold">Choose question type:</Text>

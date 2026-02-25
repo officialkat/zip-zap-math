@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ClockMode, Game, ProblemType, TimerMode } from '@enums';
 import { useTimer } from '@hooks/use-timer';
 import { useGameStats } from '@hooks/use-game-stats';
+import {GameOverReason, GameOverSummary, ScoreStats} from "@types";
 
 interface Question {
     answer: number;
@@ -21,9 +22,9 @@ interface UseGameLogicConfig<T extends Question> {
 
 interface UseGameLogicReturn<T extends Question> {
     // Game state
-    points: number;
+    scoreStats: ScoreStats;
+    gameOverSummary: GameOverSummary | null;
     gameOver: boolean;
-    highestStreak: number;
     question: T | null;
 
     // Timer state
@@ -44,7 +45,6 @@ interface UseGameLogicReturn<T extends Question> {
     resetGame: () => void;
 
     questionIndex: number;
-    isNewHighScore: boolean;
 }
 
 export const useGameLogic = <T extends Question>({
@@ -78,6 +78,7 @@ export const useGameLogic = <T extends Question>({
     const [typedAnswer, setTypedAnswer] = useState<string>("");
     const [questionIndex, setQuestionIndex] = useState<number>(0);
     const [isNewHighScore, setIsNewHighScore] = useState<boolean>(false);
+    const [gameOverSummary, setGameOverSummary] = useState<GameOverSummary | null>(null);
 
     const highestStreak = getHighestStreak(clockMode);
 
@@ -110,12 +111,20 @@ export const useGameLogic = <T extends Question>({
     }, [generateQuestion]);
 
     // Handle game over logic
-    const handleGameOver = useCallback(() => {
+    const handleGameOver = useCallback((reason: GameOverReason, userAnswer?: number) => {
         const isNewRecord = highestStreak < points;
         setIsNewHighScore(isNewRecord); // Store the flag
         setGameOver(true);
         resetTimer();
         setQuestionIndex(0);
+        if (question) {
+            setGameOverSummary({
+                reason,
+                problem: `${question.timetableQuestion[0]} × ${question.timetableQuestion[1]}`,
+                correctAnswer: question.answer,
+                userAnswer: userAnswer ?? null,
+            });
+        }
         if (isNewRecord) {
             void saveHighestStreak(clockMode, points);
         }
@@ -124,7 +133,7 @@ export const useGameLogic = <T extends Question>({
         }
 
         onIncorrectAnswer?.();
-    }, [clockMode, points, highestStreak, resetTimer, saveHighestStreak, saveHighestStopwatchTime, timeSeconds, onIncorrectAnswer]);
+    }, [clockMode, points, highestStreak, resetTimer, saveHighestStreak, saveHighestStopwatchTime, timeSeconds, onIncorrectAnswer,question]);
 
 
     // Handle correct/incorrect answer
@@ -135,7 +144,7 @@ export const useGameLogic = <T extends Question>({
                 onCorrectAnswer?.(chosenAnswer);
                 loadNextQuestion();
             } else {
-                handleGameOver();
+                handleGameOver('wrong_answer', chosenAnswer);
             }
         },
         [handleGameOver, loadNextQuestion, onCorrectAnswer]
@@ -199,15 +208,15 @@ export const useGameLogic = <T extends Question>({
     // Handle countdown timer expiration
     useEffect(() => {
         if (timerMode === TimerMode.COUNTDOWN && isRunning && timeSeconds === 0) {
-            handleGameOver();
+            handleGameOver('time_up');
         }
     }, [timerMode, isRunning, timeSeconds, handleGameOver]);
 
     return {
         // Game state
-        points,
+        scoreStats: { points, highestStreak, isNewHighScore },
+        gameOverSummary,
         gameOver,
-        highestStreak,
         question,
 
         // Timer state
@@ -224,7 +233,6 @@ export const useGameLogic = <T extends Question>({
 
         // Game controls
         resetGame,
-        isNewHighScore,
         questionIndex
     };
 };

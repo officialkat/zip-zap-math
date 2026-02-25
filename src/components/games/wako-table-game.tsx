@@ -43,9 +43,9 @@ const WakoTableGame = ({ tableNumber, problemType, clockMode }: WakoTablesGamePr
     const instructionText = ProblemType.MULTIPLE_CHOICE ? 'Tap the first multiple.' : 'Type the first multiple.'
 
     const {
-        points,
+        scoreStats,
+        gameOverSummary,
         gameOver,
-        highestStreak,
         question,
         minutes,
         seconds,
@@ -53,8 +53,7 @@ const WakoTableGame = ({ tableNumber, problemType, clockMode }: WakoTablesGamePr
         handleMultipleChoiceAnswer,
         typedAnswer,
         handleTypedAnswerChange,
-        resetGame: baseResetGame,
-        isNewHighScore,
+        resetGame,
         questionIndex
     } = useGameLogic({
         game: Game.WAKO_TABLE,
@@ -71,10 +70,10 @@ const WakoTableGame = ({ tableNumber, problemType, clockMode }: WakoTablesGamePr
     });
 
 
-    if (gameOver) {
+    if (gameOver && gameOverSummary) {
         return (
-            <GameOverDisplay isNewHighScore={isNewHighScore} points={points} highestStreak={highestStreak}>
-                <Button label="Play Again" onPress={baseResetGame} />
+            <GameOverDisplay scoreStats={scoreStats} gameOverSummary={gameOverSummary}>
+                <Button label="Play Again" onPress={resetGame} />
             </GameOverDisplay>
         );
     }
@@ -84,7 +83,7 @@ const WakoTableGame = ({ tableNumber, problemType, clockMode }: WakoTablesGamePr
     return (
         <View style={styles.wrapper}>
            <View style={styles.header}>
-               <PointsDisplay points={points} highScore={highestStreak} />
+               <PointsDisplay points={scoreStats.points} highScore={scoreStats.highestStreak} />
                {isTimed && <TimerDisplay minutes={minutes} seconds={seconds} />}
            </View>
             <View style={styles.problemContainer}>
