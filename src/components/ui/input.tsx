@@ -4,6 +4,7 @@ import {useThemeColor} from "@hooks/use-theme-color";
 
 
 const useStyles = () => {
+    const borderColor = useThemeColor({},'border');
     const textColor = useThemeColor({},'text');
     return StyleSheet.create({
         input: {
@@ -11,6 +12,7 @@ const useStyles = () => {
             borderRadius: 8,
             borderWidth: 2,
             color: textColor,
+            borderColor,
         }
     });
 };
@@ -18,10 +20,10 @@ const useStyles = () => {
 interface InputProps extends TextInputProps {
 }
 
-const Input = ({style, ...rest}: InputProps) => {
+const Input = ({style, ...restProps}: InputProps) => {
     const styles = useStyles();
     return (
-        <TextInput style={[styles.input, style]} {...rest}/>
+        <TextInput style={[styles.input, style]} {...restProps}/>
     );
 };
 

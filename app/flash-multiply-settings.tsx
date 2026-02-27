@@ -6,10 +6,11 @@ import {FlashMultiplyConfig, RadioGroupOption, SelectOption} from "@types";
 import RadioGroup from "@components/radio-group";
 import Button from "@components/ui/Button";
 import Spacer from "@components/ui/spacer";
-import {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {ClockMode, ProblemType} from "@enums";
 import useNavigationManager from "@hooks/useNavigationManager";
 import {CLOCK_MODE_OPTIONS, PROBLEM_TYPE_OPTIONS, NUMBER_OPTIONS} from "../src/constants";
+import Input from "@components/ui/input";
 
 
 const DEFAULT_CONFIG: FlashMultiplyConfig = {
@@ -47,6 +48,15 @@ export default function FlashMultiplyGameRoot() {
         }))
     }
 
+    const handleMaxMultiplierChange = useCallback((value: string) => {
+        const num = Number(value);
+        if (isNaN(num) || num > 999) return;
+        setConfig((prev) => ({
+            ...prev,
+            maxMultiplier: num,
+        }));
+    }, []);
+
     const handleClockModeSelection = (selection: RadioGroupOption) => {
         setConfig((prev)=>({
             ...prev,
@@ -72,12 +82,21 @@ export default function FlashMultiplyGameRoot() {
                     style={{listStyle: {maxHeight: 230}}}
                     listProps={{scrollEnabled: true}}
                 />
+                <Text type="defaultSemiBold">Highest multiplier:</Text>
+                <Input
+                    style={{ alignSelf: "flex-start", minWidth: 152, maxWidth: "100%" }}
+                    autoFocus={false}
+                    value={String(config.maxMultiplier)}
+                    keyboardType="number-pad"
+                    returnKeyType="done"
+                    onChangeText={handleMaxMultiplierChange}
+                />
                 <Text type="defaultSemiBold">Choose timer mode:</Text>
                 <RadioGroup defaultValue={DEFAULT_VALUES.clockMode} options={CLOCK_MODE_OPTIONS} onChange={handleClockModeSelection}/>
                 <Text type="defaultSemiBold">Choose question type:</Text>
                 <RadioGroup defaultValue={DEFAULT_VALUES.problemType} options={PROBLEM_TYPE_OPTIONS} onChange={handleProblemTypeSelection}/>
                 <Spacer/>
-                <Button disabled={config === null} label="Play" onPress={()=>{goToFlashMultiplyGame(config)}}/>
+                <Button label="Play" onPress={()=>{goToFlashMultiplyGame(config)}}/>
             </View>
         </ScreenWrapper>
     )

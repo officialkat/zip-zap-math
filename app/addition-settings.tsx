@@ -5,11 +5,11 @@ import Select from "@components/select";
 import {AdditionConfig, RadioGroupOption, SelectOption} from "@types";
 import RadioGroup from "@components/radio-group";
 import Button from "@components/ui/Button";
-import Spacer from "@components/ui/spacer";
-import {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {ClockMode, ProblemType} from "@enums";
 import useNavigationManager from "@hooks/useNavigationManager";
 import {CLOCK_MODE_OPTIONS, PROBLEM_TYPE_OPTIONS, NUMBER_OPTIONS} from "../src/constants";
+import Input from "@components/ui/input";
 
 
 const DEFAULT_CONFIG: AdditionConfig = {
@@ -25,6 +25,7 @@ const DEFAULT_VALUES = {
         label: String(num),
         value: num
     })),
+    maxAddend: String(9),
     clockMode: { label: "No timer", value: DEFAULT_CONFIG.clockMode },
     problemType: { label: "Multiple choice", value: DEFAULT_CONFIG.problemType },
 };
@@ -47,6 +48,15 @@ export default function AdditionGameRoot() {
         }))
     }
 
+    const handleMaxAddendChange = useCallback((value: string) => {
+        const num = Number(value);
+        if (isNaN(num) || num > 999) return;
+        setConfig((prev) => ({
+            ...prev,
+            maxAddend: num,
+        }));
+    }, []);
+
     const handleClockModeSelection = (selection: RadioGroupOption) => {
         setConfig((prev)=>({
             ...prev,
@@ -59,8 +69,9 @@ export default function AdditionGameRoot() {
             problemType: selection.value,
         }))
     }
+
     return (
-        <ScreenWrapper title="Addition" >
+        <ScreenWrapper title="Addition">
             <View style={styles.body}>
                 <Text type="subtitle">Settings</Text>
                 <Text type="defaultSemiBold">Choose Addends:</Text>
@@ -72,12 +83,20 @@ export default function AdditionGameRoot() {
                     style={{listStyle: {maxHeight: 230}}}
                     listProps={{scrollEnabled: true}}
                 />
+                <Text type="defaultSemiBold">Highest number to add up to:</Text>
+                <Input
+                    style={{ alignSelf: "flex-start", minWidth: 152, maxWidth: "100%" }}
+                    autoFocus={false}
+                    value={String(config.maxAddend)}
+                    keyboardType="number-pad"
+                    returnKeyType="done"
+                    onChangeText={handleMaxAddendChange}
+                />
                 <Text type="defaultSemiBold">Choose timer mode:</Text>
                 <RadioGroup defaultValue={DEFAULT_VALUES.clockMode} options={CLOCK_MODE_OPTIONS} onChange={handleClockModeSelection}/>
                 <Text type="defaultSemiBold">Choose question type:</Text>
                 <RadioGroup defaultValue={DEFAULT_VALUES.problemType} options={PROBLEM_TYPE_OPTIONS} onChange={handleProblemTypeSelection}/>
-                <Spacer/>
-                <Button disabled={config === null} label="Play" onPress={()=>{goToAdditionGame(config)}}/>
+                <Button label="Play" onPress={()=>{goToAdditionGame(config)}}/>
             </View>
         </ScreenWrapper>
     )

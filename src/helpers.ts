@@ -15,3 +15,10 @@ export const getHighestStreakKey = (clockMode: ClockMode): keyof GameStats => {
     if (clockMode === ClockMode.STOPWATCH) return "highestStreakStopwatch";
     return "highestStreak";
 };
+
+export const clampNumber = (max: number, onChange: (text: string) => void) => (text: string) => {
+    const num = Number(text);
+    if (isNaN(num)) return;
+    if (num > max) return;
+    onChange(text);
+};
