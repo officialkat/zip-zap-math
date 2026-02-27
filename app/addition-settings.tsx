@@ -1,29 +1,33 @@
 import {StyleSheet, View} from "react-native";
 import ScreenWrapper from "@components/screen-wrapper";
 import Text from "@components/ui/Text";
-import useNavigationManager from "@hooks/useNavigationManager";
-import Button from "@components/ui/Button";
 import Select from "@components/select";
-import {RadioGroupOption, SelectOption, WakoTableGameConfig} from "@types";
-import {useState} from "react";
-import Spacer from "@components/ui/spacer";
+import {AdditionConfig, RadioGroupOption, SelectOption} from "@types";
 import RadioGroup from "@components/radio-group";
+import Button from "@components/ui/Button";
+import Spacer from "@components/ui/spacer";
+import {useState} from "react";
 import {ClockMode, ProblemType} from "@enums";
+import useNavigationManager from "@hooks/useNavigationManager";
 import {CLOCK_MODE_OPTIONS, PROBLEM_TYPE_OPTIONS, NUMBER_OPTIONS} from "../src/constants";
 
 
-const DEFAULT_CONFIG: WakoTableGameConfig = {
-    tableNumber: 1,
+const DEFAULT_CONFIG: AdditionConfig = {
+    addends: [1,3,4,5],
+    maxAddend: 9,
     clockMode: ClockMode.NONE,
     problemType: ProblemType.MULTIPLE_CHOICE,
 };
 
 const DEFAULT_VALUES = {
-    tableNumber: [{ key: String(DEFAULT_CONFIG.tableNumber), label: String(DEFAULT_CONFIG.tableNumber), value: DEFAULT_CONFIG.tableNumber }],
+    addends: DEFAULT_CONFIG.addends.map(num => ({
+        key: String(num),
+        label: String(num),
+        value: num
+    })),
     clockMode: { label: "No timer", value: DEFAULT_CONFIG.clockMode },
     problemType: { label: "Multiple choice", value: DEFAULT_CONFIG.problemType },
 };
-
 
 const styles =  StyleSheet.create({
     body: {
@@ -32,16 +36,14 @@ const styles =  StyleSheet.create({
     }
 });
 
+export default function AdditionGameRoot() {
+    const [config, setConfig] = useState<AdditionConfig>(DEFAULT_CONFIG);
+    const {goToAdditionGame} = useNavigationManager()
 
-export default function WakoTableSettingsRoot() {
-    const [config, setConfig] = useState<WakoTableGameConfig>(DEFAULT_CONFIG);
-    const {goToWakoTableGame} = useNavigationManager()
-
-
-    const handleTimetableSelection = (selectedOptions: SelectOption[]) => {
+    const handleAddendsSelection = (selectedOptions: SelectOption[]) => {
         setConfig((prev)=>({
             ...prev,
-            tableNumber: selectedOptions[0].value,
+            addends: selectedOptions.map((option) => option.value),
         }))
     }
 
@@ -58,14 +60,15 @@ export default function WakoTableSettingsRoot() {
         }))
     }
     return (
-        <ScreenWrapper title="Wako Table" >
+        <ScreenWrapper title="Addition" >
             <View style={styles.body}>
                 <Text type="subtitle">Settings</Text>
-                <Text type="defaultSemiBold">Choose timetable:</Text>
+                <Text type="defaultSemiBold">Choose Addends:</Text>
                 <Select
-                    defaultOptions={DEFAULT_VALUES.tableNumber}
+                    multiselect
+                    defaultOptions={DEFAULT_VALUES.addends}
                     options={NUMBER_OPTIONS}
-                    onChange={handleTimetableSelection}
+                    onChange={handleAddendsSelection}
                     style={{listStyle: {maxHeight: 230}}}
                     listProps={{scrollEnabled: true}}
                 />
@@ -74,7 +77,7 @@ export default function WakoTableSettingsRoot() {
                 <Text type="defaultSemiBold">Choose question type:</Text>
                 <RadioGroup defaultValue={DEFAULT_VALUES.problemType} options={PROBLEM_TYPE_OPTIONS} onChange={handleProblemTypeSelection}/>
                 <Spacer/>
-                <Button disabled={config === null} label="Play" onPress={()=>{goToWakoTableGame(config)}}/>
+                <Button disabled={config === null} label="Play" onPress={()=>{goToAdditionGame(config)}}/>
             </View>
         </ScreenWrapper>
     )

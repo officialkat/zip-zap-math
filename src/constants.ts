@@ -12,7 +12,7 @@ export const PROBLEM_TYPE_OPTIONS: RadioGroupOption[] = [
     { label: "Multiple choice", value: ProblemType.MULTIPLE_CHOICE },
 ];
 
-export const TABLE_NUMBER_OPTIONS: SelectOption[] = Array.from(
+export const NUMBER_OPTIONS: SelectOption[] = Array.from(
     { length: 32 },
     (_, i) => {
         const n = i + 1;

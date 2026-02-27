@@ -9,7 +9,7 @@ import Spacer from "@components/ui/spacer";
 import {useState} from "react";
 import {ClockMode, ProblemType} from "@enums";
 import useNavigationManager from "@hooks/useNavigationManager";
-import {CLOCK_MODE_OPTIONS, PROBLEM_TYPE_OPTIONS, TABLE_NUMBER_OPTIONS} from "../src/constants";
+import {CLOCK_MODE_OPTIONS, PROBLEM_TYPE_OPTIONS, NUMBER_OPTIONS} from "../src/constants";
 
 
 const DEFAULT_CONFIG: FlashMultiplyConfig = {
@@ -67,7 +67,7 @@ export default function FlashMultiplyGameRoot() {
                 <Select
                     multiselect
                     defaultOptions={DEFAULT_VALUES.timetables}
-                    options={TABLE_NUMBER_OPTIONS}
+                    options={NUMBER_OPTIONS}
                     onChange={handleTimetableSelection}
                     style={{listStyle: {maxHeight: 230}}}
                     listProps={{scrollEnabled: true}}

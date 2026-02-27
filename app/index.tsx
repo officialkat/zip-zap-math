@@ -20,11 +20,12 @@ const styles =  StyleSheet.create({
 
 
 export default function Index() {
-    const {goToFlashMultiplySettings, goToWakoTableSettings, goToStats} = useNavigationManager()
+    const {goToAdditionSettings, goToFlashMultiplySettings, goToWakoTableSettings, goToStats} = useNavigationManager()
     return (
         <ScreenWrapper title="Games" showBackButton={false} >
             <View style={styles.wrapper}>
                 <View style={styles.gamesButtons}>
+                    <Button label="Addition" onPress={goToAdditionSettings}/>
                     <Button label="Flash Multiply" onPress={goToFlashMultiplySettings}/>
                     <Button label="Wako Tables" onPress={goToWakoTableSettings}/>
                 </View>

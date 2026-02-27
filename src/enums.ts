@@ -1,4 +1,5 @@
 export enum Game {
+    ADDITION= "addition",
     FLASH_MULTIPLY= "flashMultiply",
     WAKO_TABLE= "wakoTable",
 }

@@ -30,6 +30,16 @@ export type GameConfig = {
     problemType: ProblemType;
 }
 
+export type AdditionRouteConfig = GameConfig & {
+    addends: string;
+    maxAddend: string;
+}
+
+export type AdditionConfig = GameConfig & {
+    addends: number[];
+    maxAddend: number;
+}
+
 export type FlashMultiplyRouteConfig = GameConfig & {
     timetables: string;
     maxMultiplier: string;
@@ -55,6 +65,12 @@ export type FlashMultiplyQuestion = {
     answer: number
     options: number[]
     timetableQuestion: number[]
+}
+
+export type AdditionQuestion = {
+    answer: number;
+    options: number[];
+    additionQuestion: number[];
 }
 
 export type ScoreStats = {
