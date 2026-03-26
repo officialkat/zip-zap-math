@@ -13,11 +13,11 @@ const styles =  StyleSheet.create({
 
 
 export default function FlashMultiplyGameRoot() {
-    const {timetables, maxMultiplier, problemType, clockMode} = useLocalSearchParams<FlashMultiplyRouteConfig>();
+    const {timetables, maxMultiplier, lowestMultiplier, problemType, clockMode} = useLocalSearchParams<FlashMultiplyRouteConfig>();
 
     return (
         <ScreenWrapper title="Flash Mutliply Game" style={styles.wrapper} >
-            <FlashMultiplyGame timetables={timetables.split(',').map(Number)} maxMultiplier={Number(maxMultiplier)} problemType={problemType} clockMode={clockMode}/>
+            <FlashMultiplyGame timetables={timetables.split(',').map(Number)} maxMultiplier={Number(maxMultiplier)} lowestMultiplier={Number(lowestMultiplier)} problemType={problemType} clockMode={clockMode}/>
         </ScreenWrapper>
     )
 }

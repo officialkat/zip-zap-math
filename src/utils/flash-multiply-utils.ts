@@ -7,6 +7,7 @@ const MAX_ATTEMPTS = 100;
  * Generates wrong answer options for a multiplication problem
  * @param answer - The correct answer
  * @param timetable - The times table being used
+ * @param minTimetable - Minimum multiplier value
  * @param maxTimetable - Maximum multiplier value
  * @param numOfOptions - Number of total options to generate
  * @returns Array of all options (including correct answer)
@@ -14,6 +15,7 @@ const MAX_ATTEMPTS = 100;
 const makeAnswers = (
     answer: number,
     timetable: number,
+    minTimetable: number,
     maxTimetable: number,
     numOfOptions: number = 4
 ): number[] => {
@@ -21,7 +23,7 @@ const makeAnswers = (
     let attempts = 0;
 
     while (answers.size < numOfOptions && attempts < MAX_ATTEMPTS) {
-        const timesByNumber = Math.floor(Math.random() * (maxTimetable + 1));
+        const timesByNumber = Math.floor(Math.random() * (maxTimetable - minTimetable + 1)) + minTimetable;
         answers.add(timetable * timesByNumber);
         attempts++;
     }
@@ -33,17 +35,19 @@ const makeAnswers = (
  * Generates a flash multiplication question
  * @param timetables - Array of times tables to choose from (e.g., [1, 2, 5])
  * @param maxMultiplier - Maximum multiplier value (default: 12)
+ * @param lowestMultiplier - Minimum multiplier value (default: 0)
  * @returns Question object with problem numbers, answer, and shuffled options
  */
 export const makeFlashMultiplyQuestion = (
     timetables: number[],
-    maxMultiplier: number = 12
+    maxMultiplier: number = 12,
+    lowestMultiplier: number = 0
 ): FlashMultiplyQuestion => {
-    const multiplier = Math.floor(Math.random() * (maxMultiplier + 1));
+    const multiplier = Math.floor(Math.random() * (maxMultiplier - lowestMultiplier + 1)) + lowestMultiplier;
     const timetable = timetables[Math.floor(Math.random() * timetables.length)];
 
     const answer = multiplier * timetable;
-    const allAnswers = makeAnswers(answer, timetable, maxMultiplier, 4);
+    const allAnswers = makeAnswers(answer, timetable, lowestMultiplier, maxMultiplier, 4);
 
     return {
         timetableQuestion: shuffle<number>([multiplier, timetable]),
