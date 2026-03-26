@@ -50,6 +50,7 @@ const useNavigationManager = () => {
             params:{
                 timetables: config.timetables.join(','),
                 maxMultiplier: String(config.maxMultiplier),
+                lowestMultiplier: String(config.lowestMultiplier),
                 clockMode: config.clockMode,
                 problemType: config.problemType,
             },

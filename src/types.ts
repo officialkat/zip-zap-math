@@ -43,11 +43,13 @@ export type AdditionConfig = GameConfig & {
 export type FlashMultiplyRouteConfig = GameConfig & {
     timetables: string;
     maxMultiplier: string;
+    lowestMultiplier: string;
 }
 
 export type FlashMultiplyConfig = GameConfig & {
     timetables: number[];
     maxMultiplier: number;
+    lowestMultiplier: number;
 }
 
 export type WakoTableGameConfig = GameConfig & {

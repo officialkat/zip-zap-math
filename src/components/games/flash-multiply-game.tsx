@@ -32,6 +32,7 @@ interface FlashMultiplyGameProps {
     clockMode: ClockMode;
     timetables: number[];
     maxMultiplier: number;
+    lowestMultiplier: number;
 }
 
 
@@ -40,12 +41,13 @@ const FlashMultiplyGame = ({
                                problemType,
                                clockMode,
                                timetables,
-                               maxMultiplier
+                               maxMultiplier,
+                               lowestMultiplier
                            }: FlashMultiplyGameProps) => {
     // Generate question callback
     const generateQuestion = useCallback((): FlashMultiplyQuestion => {
-        return makeFlashMultiplyQuestion(timetables, maxMultiplier);
-    }, [timetables, maxMultiplier]);
+        return makeFlashMultiplyQuestion(timetables, maxMultiplier, lowestMultiplier);
+    }, [timetables, maxMultiplier, lowestMultiplier]);
 
     const tableNumber = timetables.join(',');
 
